@@ -17,9 +17,12 @@ var bodyParser = require('body-parser');
 const app= express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-
 const db = getFirestore();
+dbfile='locations';
+dbfile2='storage';
+const locations_db = db.collection(dbfile);
+const storage_db = db.collection(dbfile2);
+
 var ss=[];
 
 
@@ -31,8 +34,21 @@ app.get('/hello', (req, res, next) => {
 app.post('/allocate', function(req, res) {
     console.log('receiving data ...');
     console.log('body is ',req.body);
+    data= req.body;
+    // valdata=  FieldValue.arrayUnion(data.barcode);    
+    storage_db.add({ location:data.loc,items:data.items});
     // res.send(req.body);    
-    res.send({data:req.body});
+    res.send({data:data});
+});
+
+app.post('/pickup', function(req, res) {
+    console.log('receiving data ...');
+    console.log('body is ',req.body);
+    data= req.body;
+    val=storage_db.where('location', '==',
+  "sk2");
+    // res.send(req.body);    
+    res.send({data:val});
 });
 
 
@@ -41,8 +57,7 @@ app.listen (PORT, ()=>{
 });
 
 
-dbfile='locations';
-const users = db.collection(dbfile).get().then(
+ locations_db.get().then(
             (x) => { x.forEach ( (xx) => { const id=xx.id;
                                     const data=xx.data();
                                     ss.push({id, ...data})
