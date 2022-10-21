@@ -43,10 +43,20 @@ app.post('/allocate', function(req, res) {
 
 app.post('/pickup', function(req, res) {
     console.log('receiving data ...');
-    console.log('body is ',req.body);
-    data= req.body;
-    val=storage_db.where('location', '==',
-  "sk2");
+    console.log('param   req.body is ',req.body);
+param= req.body.data; ss=[];
+     //param="sk5";
+     // param="nwy184395002";
+    val=storage_db.where('items','array-contains',param).get().then(
+            (x) => { x.forEach ( (xx) => { const id=xx.id;
+                                    const data=xx.data();
+                                    ss.push({id, ...data})
+                                     } 
+                     )
+            console.log("query: ",param," result: ",ss,ss.length);
+
+});
+  
     // res.send(req.body);    
     res.send({data:val});
 });
@@ -56,8 +66,7 @@ app.listen (PORT, ()=>{
     console.log('Server is running on PORT ',PORT);
 });
 
-
- locations_db.get().then(
+storage_db.get().then(
             (x) => { x.forEach ( (xx) => { const id=xx.id;
                                     const data=xx.data();
                                     ss.push({id, ...data})
