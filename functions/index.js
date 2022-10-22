@@ -10,7 +10,6 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
-
 const express= require('express');
 const PORT=3000;
 var bodyParser = require('body-parser');
@@ -27,17 +26,14 @@ var ss=[];
 
 
 app.get('/hello', (req, res, next) => {
-    res.send ({mensaje:"Welcome Firebase Alex"});
-
+    res.send ({mensaje:"Welcome v8 Neway"});
 });
 
 app.post('/allocate', function(req, res) {
     console.log('receiving data ...');
     console.log('body is ',req.body);
-    data= req.body;
-    // valdata=  FieldValue.arrayUnion(data.barcode);    
-    storage_db.add({ location:data.loc,items:data.items});
-    // res.send(req.body);    
+    data= req.body;    
+    storage_db.add({ location:data.loc,items:data.items});    
     res.send({data:data});
 });
 
@@ -46,7 +42,7 @@ app.post('/pickup', function(req, res) {
     console.log('param   req.body is ',req.body);
 param= req.body.data; ss=[];
      //param="sk5";
-     // param="nwy184395002";
+     //param="nwy184395002";
     val=storage_db.where('items','array-contains',param).get().then(
             (x) => { x.forEach ( (xx) => { const id=xx.id;
                                     const data=xx.data();
