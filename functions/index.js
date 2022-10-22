@@ -50,11 +50,11 @@ param= req.body.data; ss=[];
                                      } 
                      )
             console.log("query: ",param," result: ",ss,ss.length);
-
+            // res.send(req.body);    
+            res.send({data:ss});
 });
   
-    // res.send(req.body);    
-    res.send({data:val});
+    
 });
 
 
